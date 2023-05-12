@@ -24,7 +24,7 @@ export default async function ecpayinfo(req, res) {
       ItemName: itemname, // 商品名稱
       ReturnURL: 'http://accentcoach.co/api/ecpay-callback', // 付款完成後返回的網址
       ClientBackURL: 'https://accentcoach.co/api/ecpay-callback', // 付款取消後返回的網址,
-      OrderResultURL: 'https://accentcoach.co/api/ecpay-orderresultback',
+      OrderResultURL: 'https://accentcoach.co/ecpay_orderresultback',
       ChoosePayment: 'ALL',
       EncryptType: 1, // 交易資料加密類型，固定為 1
 
