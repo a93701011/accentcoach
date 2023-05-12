@@ -22,9 +22,9 @@ export default async function ecpayinfo(req, res) {
       TotalAmount: amount, // 訂單總金額
       TradeDesc: `${itemname}-${bookingdate}-${email}`, // 交易描述
       ItemName: itemname, // 商品名稱
-      ReturnURL: 'http://www.ecpay.com.tw/receive.php/api/ecpay-callback', // 付款完成後返回的網址
-      ClientBackURL: 'https://accentcoach.vercel.app/', // 付款取消後返回的網址,
-      OrderResultURL: 'https://accentcoach.vercel.app/api/ecpay-orederresultback',
+      ReturnURL: 'http://accentcoach.co/api/ecpay-callback', // 付款完成後返回的網址
+      ClientBackURL: 'https://accentcoach.co/api/ecpay-callback', // 付款取消後返回的網址,
+      OrderResultURL: 'https://accentcoach.co/api/ecpay-orderresultback',
       ChoosePayment: 'ALL',
       EncryptType: 1, // 交易資料加密類型，固定為 1
 

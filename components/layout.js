@@ -36,6 +36,7 @@ export default function Layout({ children, home }) {
       />
 
       <Navbar />
+      <h1 className={utilStyles.heading2Xl}>[!!!測試中TEST!!!不要預約不要付款]</h1>
       <div className={styles.main}>{children}</div>
       <Footer />
     </div>

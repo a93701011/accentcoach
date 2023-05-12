@@ -17,11 +17,11 @@ export default function Home() {
       </Head>
 
       <section className={utilStyles.headingMd}>
+        
         <h1 className={utilStyles.heading2Xl}>American Accent Private Coach</h1>
-
         <div className={utilStyles.flexcc}>
-        {language === 'en'?'>':''}<div className={utilStyles.button} onClick={() => setLanguage('en')}>English</div>{language === 'en'?'<':''}
-        {language === 'zh'?'>':''}<div className={utilStyles.button} onClick={() => setLanguage('zh')}>中文</div>{language === 'zh'?'<':''}
+          {language === 'en' ? '>' : ''}<div className={utilStyles.button} onClick={() => setLanguage('en')}>English</div>{language === 'en' ? '<' : ''}
+          {language === 'zh' ? '>' : ''}<div className={utilStyles.button} onClick={() => setLanguage('zh')}>中文</div>{language === 'zh' ? '<' : ''}
         </div>
       </section>
 
@@ -52,7 +52,7 @@ export default function Home() {
         </h3>
 
         <div className={utilStyles.textMd}>
-          
+
           <p>{language === 'en' ? '- speak smoothly' : ' -  說話流暢'}</p>
           <p>{language === 'en' ? '- build confidence' : ' - 建立自信'}</p>
           <p>{language === 'en' ? '- create attitude' : ' - 塑造態度'}</p>
