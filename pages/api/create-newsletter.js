@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       res.status(200).json({email});
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: 'Error creating booking' });
+      res.status(500).json({ message: 'Error creating newsletters' });
     } finally {
       await pool.close();
     }

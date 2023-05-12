@@ -12,10 +12,8 @@ export default async function handler(req, res) {
       await pool.connect();
 
       const { teacherid } = req.body;
-      // request.input('email', sql.VarChar, email);
       const query = `SELECT opendatetime FROM accentcoach_timesheet  where teacherid = ${teacherid} and status = 1`;
       const result = await pool.request().query(query);
-      console.log(result.recordset)
 
       res.status(200).json(result.recordset);
     } catch (err) {

@@ -11,25 +11,26 @@ export default async function handler(req, res) {
     try {
       await pool.connect();
 
-      // const orderId = Math.floor(Math.random() * 1000) + 1;
-      const orderid = (new Date()).getTime();
+       const orderid = `aacp${(new Date()).getTime()}`;
       
-      const {  username, phone, email, amount, bookingdate } = req.body;
+      const {  username, phone, email, itemname, amount, bookingdate } = req.body;
+      console.log(req.body)
       const request = new sql.Request(pool);
-      request.input('username', sql.VarChar, username);
+      request.input('username', sql.NVarChar, username);
       request.input('phone', sql.VarChar, phone);
       request.input('email', sql.VarChar, email);
+      request.input('itemname', sql.NVarChar, itemname);
       request.input('amount', sql.VarChar, amount);
       request.input('bookingdate', sql.DateTime, bookingdate);
-      request.input('orderid', sql.BigInt, orderid);
+      request.input('orderid', sql.VarChar, orderid);
       request.input('created_datetime', sql.DateTime, new Date());
 
 
       const result = await request.query(`
-        INSERT INTO accentcoach_bookings (orderid, username, phone, email, amount, bookingdate, created_datetime, bookstatus)
-        VALUES (@orderid, @username, @phone, @email, @amount, @bookingdate, @created_datetime, 0)
+        INSERT INTO accentcoach_bookings (orderid, username, phone, email, itemname, amount, bookingdate, created_datetime, bookstatus)
+        VALUES (@orderid, @username, @phone, @email, @itemname, @amount, @bookingdate, @created_datetime, 0)
       `);
-      // res.status(200).json({ message: 'Booking created successfully' });
+
       res.status(200).json({orderid});
     } catch (err) {
       console.error(err);

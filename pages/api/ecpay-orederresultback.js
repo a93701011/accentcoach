@@ -16,7 +16,6 @@ export default async function ecpaycallback(req, res) {
 
   const MerchantTradeNo = data.MerchantTradeNo
   if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
-
     console.log('Payment succeeded:', MerchantTradeNo)
     res.redirect('/order_success');
   } else {

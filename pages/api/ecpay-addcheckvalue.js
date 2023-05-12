@@ -10,50 +10,35 @@ const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
 
 
-export default async function ecpayinfo (req, res){
+export default async function ecpayinfo(req, res) {
+  if (req.method === 'POST') {
+    const { orderid, amount, itemname, bookingdate, email } = req.body;
 
-  const { orderid, amount } = req.body;
-  console.log(orderid, amount)
-  
-  let data = {
-    MerchantID: MERCHANT_ID,
-    MerchantTradeNo: `aapc${orderid}${Math.floor(Math.random()*100)}`, // 產生一個唯一的訂單編號
-    MerchantTradeDate: new Date().toISOString().substring(0, 19).replace('T', ' ').replace('-','/').replace('-','/'), // 訂單建立日期時間，格式為 yyyy/MM/dd HH:mm:ss
-    PaymentType: 'aio',
-    TotalAmount: amount, // 訂單總金額
-    TradeDesc: 'Test Trade', // 交易描述
-    ItemName: 'Test Item', // 商品名稱
-    ReturnURL: 'http://www.ecpay.com.tw/receive.php', // 付款完成後返回的網址
-    // ClientBackURL: 'http://localhost:3000', // 付款取消後返回的網址
-    ChoosePayment: 'ALL',
-    EncryptType: 1, // 交易資料加密類型，固定為 1
-    
-  };
-    
-  const checkMacValue = computeCheckMacValue(data);
-  data.CheckMacValue = checkMacValue;
-  console.log(data)
-  
-  res.status(200).send(data);
-  // let config = {
-  //   method: 'post',
-  //   maxBodyLength: Infinity,
-  //   url: ECPAY_PAYMENT_API_URL,
-  //   headers: { 
-  //     'Content-Type': 'application/x-www-form-urlencoded'
-  //   },
-  //   data:data
-  // };
-  // await axios.request(config)
-  // .then((response) => {
-  //   res.status(200).send(response.data);
+    let data = {
+      MerchantID: MERCHANT_ID,
+      MerchantTradeNo: `${orderid}${Math.floor(Math.random() * 100)}`, // 產生一個唯一的訂單編號
+      MerchantTradeDate: new Date().toISOString().substring(0, 19).replace('T', ' ').replace('-', '/').replace('-', '/'), // 訂單建立日期時間，格式為 yyyy/MM/dd HH:mm:ss
+      PaymentType: 'aio',
+      TotalAmount: amount, // 訂單總金額
+      TradeDesc: `${itemname}-${bookingdate}-${email}`, // 交易描述
+      ItemName: itemname, // 商品名稱
+      ReturnURL: 'http://www.ecpay.com.tw/receive.php/ecpay-callback', // 付款完成後返回的網址
+      ClientBackURL: 'https://accentcoach.vercel.app/', // 付款取消後返回的網址,
+      OrderResultURL: 'https://accentcoach.vercel.app/ecpay-orederresultback',
+      ChoosePayment: 'ALL',
+      EncryptType: 1, // 交易資料加密類型，固定為 1
 
-  // })
-  // .catch((error) => {
-  //   console.log(error);
-  // });
+    };
 
-  
+    const checkMacValue = computeCheckMacValue(data);
+    data.CheckMacValue = checkMacValue;
+
+    res.status(200).send(data);
+  } else {
+    res.status(404).end();
+  }
+
+
 };
 
 // 計算 CheckMacValue
@@ -71,12 +56,12 @@ const computeCheckMacValue = (data) => {
   const urlEncodedDataWithHash = `HashKey=${HASH_KEY}&${urlEncodedString}&HashIV=${HASH_IV}`;
   // console.log(urlEncodedDataWithHash)
   // 將 URL 字串轉換成小寫的 STRING
-  const lowercaseEncodedDataWithHash =encodeURIComponent(urlEncodedDataWithHash).toLowerCase().replace(/%20/g, "+");
+  const lowercaseEncodedDataWithHash = encodeURIComponent(urlEncodedDataWithHash).toLowerCase().replace(/%20/g, "+");
 
   // console.log(lowercaseEncodedDataWithHash)
   // 使用 SHA256 加密 HEX 字串，並轉換成大寫的 SHA256 字串
   const hash = crypto.createHash('sha256').update(lowercaseEncodedDataWithHash).digest('hex').toUpperCase();
-   return hash;
+  return hash;
 };
 
 

@@ -11,6 +11,7 @@ export default function Order() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [amount, setAmount] = useState('');
+  const [itemname, setItemName] = useState('');
   const [bookingdate, setBookingdate] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false)
   const teacherid = 1;
@@ -46,7 +47,7 @@ export default function Order() {
 
     await fetch('/api/create-booking', {
       method: 'POST',
-      body: JSON.stringify({ username, phone, email, amount, bookingdate }),
+      body: JSON.stringify({ username, phone, email, itemname, amount, bookingdate }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -101,14 +102,13 @@ export default function Order() {
               <input className={formStyles.input} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
 
-        
             <div className={utilStyles.flexcc}>
               <label className={utilStyles.three} for="amount">大人/小孩:*</label>
-              <select className={formStyles.select} id="amount" name="amount" value={amount} onChange={(e) => setAmount(e.target.value)}>
+              <select className={formStyles.select} id="amount" name="amount" value={itemname} onChange={(e) => {setAmount(e.target.value.split('-')[1]); setItemName(e.target.value)}}>
                 <option value="0">請選擇</option>
-                <option value="3000">大人(3000)</option>
-                <option value="3000">小孩(3000)</option>
-                <option value="2500">小孩(2500)</option>
+                <option value="大人-3000">大人(3000)</option>
+                <option value="小孩-3000">小孩(3000)</option>
+                <option value="小孩-2500">小孩(2500)</option>
               </select>
             </div>
             <div className={utilStyles.flexcc}>

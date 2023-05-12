@@ -3,28 +3,33 @@ const MERCHANT_ID = process.env.MERCHANT_ID;
 const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
 
-
 export default async function ecpaycallback(req, res) {
+  if (req.method === 'POST') {
 
   const data = req.body
   const getCheckMacValue = computeCheckMacValue(data);
+  const MerchantTradeNo = data.MerchantTradeNo
   const RtnCode = data.RtnCode
   const RtnMsg = data.RtnMsg
   const checkMacValue = data.CheckMacValue
-
   console.log('Payment data:', data)
 
-  const MerchantTradeNo = data.MerchantTradeNo
+  
   if (checkMacValue == getCheckMacValue) {
-
     console.log('Payment succeeded:', MerchantTradeNo)
+    
+
     res.status(200).send('1|OK')
   } else {
     console.log('Invalid callback:', MerchantTradeNo)
     res.status(400).send('0|FAIL')
   }
-}
+    }   else {
+      res.status(404).end();
+    }
+  
 
+}
 
 
 

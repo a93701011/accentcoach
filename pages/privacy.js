@@ -6,6 +6,7 @@ export default function Privacy() {
     return (<Layout>
         <Head>
             <title>{siteTitle}</title>
+            <meta name="robots" content="noindex,nofollow" />
         </Head>
         <div>
             <h3>隱私權政策</h3>

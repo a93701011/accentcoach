@@ -17,6 +17,7 @@ export default function paymentsucess() {
         <Layout>
             <Head>
                 <title>{siteTitle}</title>
+                <meta name="robots" content="noindex,nofollow" />
             </Head>
             <section>
                 <div className={utilStyles.textMd}>

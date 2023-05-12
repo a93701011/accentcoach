@@ -9,7 +9,6 @@ export default function Payment() {
   const router = useRouter();
   const { orderid } = router.query;
   const [booking, setBooking] = useState([]);
-  const [amount, setAmount] = useState('');
   const [isloading, setIsLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -30,8 +29,7 @@ export default function Payment() {
         .then(data => {
           if (data) {
             setBooking(data);
-            // console.log(data)
-            setAmount(data.amount);
+            // console.log(booking)
             setIsLoading(false);
           }
           
@@ -49,15 +47,14 @@ export default function Payment() {
     setIsSubmitting(true)
     await fetch('/api/ecpay-addcheckvalue', {
       method: 'POST',
-      body: JSON.stringify({ booking }),
+      body: JSON.stringify({orderid, 'amount': booking.amount, 'itemname':booking.itemname, 'bookingdate':booking.bookingdate, 'email':booking.email}),
       headers: {
         'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
       .then(data => {
-
-        console.log(data)
+        // console.log(data)
         let form = document.createElement('form');
         form.setAttribute('method', 'post');
         form.setAttribute('action', 'https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5');
@@ -65,12 +62,10 @@ export default function Payment() {
         for (const key in data) {
           if (data.hasOwnProperty(key)) {
             const input = document.createElement("input");
-        
             input.type = "text";
             input.name = key;
             console.log(data[key])
             input.value = data[key];
-        
             form.appendChild(input);
           }
         }
@@ -106,12 +101,16 @@ export default function Payment() {
               </div>
 
               <div className={utilStyles.flexcc}>
-                <div className={utilStyles.three}><p>付款金額：</p></div>
-                <div className={utilStyles.five} ><p>{booking.amount}</p></div>
+                <div className={utilStyles.three}><p>付款金額(訂金)：</p></div>
+                <div className={utilStyles.five} ><p>{booking.amount*0.2}</p></div>
+              </div>
+              <div className={utilStyles.flexcc}>
+                <div className={utilStyles.three}><p>付款金額(剩餘款項)：</p></div>
+                <div className={utilStyles.five} ><p>NTD {booking.amount*0.8}</p></div>
               </div>
               <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>使用者名稱:</p></div>
-                <div className={utilStyles.five} ><p>{booking.username}</p></div>
+                <div className={utilStyles.five} ><p>NTD {booking.username}</p></div>
               </div>
               <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>連絡電話:</p></div>
@@ -122,13 +121,16 @@ export default function Payment() {
                 <div className={utilStyles.five} ><p>{booking.email}</p></div>
               </div>
               <div className={utilStyles.flexcc}>
+                <div className={utilStyles.three}><p>預約項目:</p></div>
+                <div className={utilStyles.five} ><p>{booking.itemname}</p></div>
+              </div>
+              <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>預約日期:</p></div>
                 <div className={utilStyles.five} ><p>{booking.bookingdate}</p></div>
               </div>
-
               <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>付款狀態:</p></div>
-                <div className={utilStyles.five} ><p>{booking.bookstatus}</p></div>
+                <div className={utilStyles.five} ><p>{booking.bookstatus==0 ? '待付款' : null}</p></div>
               </div>
 
               <div className={utilStyles.flexcc}>

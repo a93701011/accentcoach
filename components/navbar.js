@@ -21,7 +21,7 @@ export default function Navbar() {
      
       <ul className={navStyles.menu}>
 
-        <li> <Link href="/">首頁</Link></li>
+        <li> <Link key="canonical" href="/">首頁</Link></li>
         <li> <Link href="/searchbooking">查詢</Link></li>
         <li> <Link href="/booking">預約</Link></li>
       </ul>
