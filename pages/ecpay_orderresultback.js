@@ -8,10 +8,10 @@ import formStyles from '../styles/form.module.css'
 export default function paymentsucess() {
 
     const router = useRouter();
-    const data = router.body;
+    // const data = router.body;
 
-    console.log(data)
-    
+    // console.log(data)
+
     const handleClick = () => {
         router.push('/');
     };
