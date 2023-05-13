@@ -10,7 +10,7 @@ const HASH_IV = process.env.HASH_IV;
 
 export default async function ecpaycallback(req, res) {
   // if (req.method === 'POST') {
-  const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt, } = req.body
+  const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt, } = req.query
   // const data = req.body
   // const getCheckMacValue = computeCheckMacValue(data);
 
