@@ -1,6 +1,6 @@
 
 const sql = require('mssql');
-const crypto = require('crypto');
+// const crypto = require('crypto');
 import config from '../../config/config';
 const pool = new sql.ConnectionPool(config);
 
@@ -10,22 +10,53 @@ const HASH_IV = process.env.HASH_IV;
 
 export default async function ecpaycallback(req, res) {
   // if (req.method === 'POST') {
+  const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt,  } = req.body
+  // const data = req.body
+  // const getCheckMacValue = computeCheckMacValue(data);
 
-    const data = req.body
-    const getCheckMacValue = computeCheckMacValue(data);
-    const CheckMacValue = data.CheckMacValue
-    console.log(data)
-    if (CheckMacValue == getCheckMacValue) {
-        
-      res.status(200).send('1|OK')
-    } else {
-      res.status(400).send('0|FAIL')
-    }
+  // console.log(data)
+
+  await pool.connect();
+  const request = new sql.Request(pool);
+  request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
+  request.input('RtnCode', sql.VarChar, RtnCode);
+  request.input('RtnMsg', sql.VarChar, RtnMsg);
+  request.input('PaymentDate', sql.DateTime, PaymentDate);
+  request.input('TradeNo', sql.VarChar, TradeNo);
+  request.input('TradeAmt', sql.Int, TradeAmt);
+  const result = await request.query(`
+      INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, PaymentDate, TradeNo,TradeAmt )
+      VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @PaymentDate, @TradeNo, @TradeAmt)
+      `);
+  await pool.close();
+
+  res.status(200).send('1|OK')
+
+  // res.status(400).send('0|FAIL')
+
   // } else {
   //   res.status(404).end();
   // }
 }
-
+// [Object: null prototype] {
+//   CustomField1: '',
+//   CustomField2: '',
+//   CustomField3: '',
+//   CustomField4: '',
+//   MerchantID: '2000132',
+//   MerchantTradeNo: 'aacp168394433458368',
+//   PaymentDate: '2023/05/13 10:20:37',
+//   PaymentType: 'Credit_CreditCard',
+//   PaymentTypeChargeFee: '60',
+//   RtnCode: '1',
+//   RtnMsg: 'Succeeded',
+//   SimulatePaid: '0',
+//   StoreID: '',
+//   TradeAmt: '3000',
+//   TradeDate: '2023/05/13 10:19:58',
+//   TradeNo: '2305131019589927',
+//   CheckMacValue: 'F8C57828A5E5DFB301402E2922336E8DE080C5A4F76E4F77DAB58674C674022F'
+// }
 
 
 // 計算 CheckMacValue
