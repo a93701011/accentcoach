@@ -16,9 +16,9 @@ export default async function ecpaycallback(req, res) {
     // const MerchantTradeNo = data.MerchantTradeNo
     // if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
     if (RtnCode == '1' ) {
-      res.redirect(307, '/order_success');
+      res.redirect(307, '/order/order_success');
     } else {
-      res.redirect(307, '/order_fail');
+      res.redirect(307, '/order/order_fail');
     }
   } else {
     res.status(404).end();
@@ -26,7 +26,25 @@ export default async function ecpaycallback(req, res) {
 
 }
 
-
+// [Object: null prototype] {
+//   CustomField1: '',
+//   CustomField2: '',
+//   CustomField3: '',
+//   CustomField4: '',
+//   MerchantID: '2000132',
+//   MerchantTradeNo: 'aacp168394433458368',
+//   PaymentDate: '2023/05/13 10:20:37',
+//   PaymentType: 'Credit_CreditCard',
+//   PaymentTypeChargeFee: '60',
+//   RtnCode: '1',
+//   RtnMsg: 'Succeeded',
+//   SimulatePaid: '0',
+//   StoreID: '',
+//   TradeAmt: '3000',
+//   TradeDate: '2023/05/13 10:19:58',
+//   TradeNo: '2305131019589927',
+//   CheckMacValue: 'F8C57828A5E5DFB301402E2922336E8DE080C5A4F76E4F77DAB58674C674022F'
+// }
 
 
 // 計算 CheckMacValue
