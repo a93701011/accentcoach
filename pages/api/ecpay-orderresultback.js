@@ -4,6 +4,7 @@ const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
 import config from '../../config/config';
 const pool = new sql.ConnectionPool(config);
+const sql = require('mssql');
 
 export default async function ecpaycallback(req, res) {
 
