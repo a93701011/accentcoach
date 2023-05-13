@@ -7,71 +7,40 @@ const pool = new sql.ConnectionPool(config);
 // const HASH_KEY = process.env.HASH_KEY;
 // const HASH_IV = process.env.HASH_IV;
 
-export default async function handler(req, res) {
-  const { RtnCode, RtnMsg, MerchantTradeNo, TradeDate, CheckMacValue} = req.body
-  try {
-    if ( RtnMsg == 'Succeeded' && RtnCode == '1') {
-      await handleFormInputAsync({ email })
-      res.redirect(307, '/order/order_success')
-    }else{
+
+
+
+export default async function ecpaycallback(req, res) {
+
+  if (req.method === 'POST') {
+    console.log(req.body)
+    const data = req.body;
+    const { RtnCode, RtnMsg, MerchantTradeNo, TradeDate, CheckMacValue} = req.body
+    const getCheckMacValue = computeCheckMacValue(data);
+
+    if (&& RtnMsg == 'Succeeded' && RtnCode == '1') {
+      await pool.connect();
+        const request = new sql.Request(pool);
+        request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
+        request.input('RtnCode', sql.VarChar, RtnCode);
+        request.input('RtnMsg', sql.VarChar, RtnMsg);
+        request.input('ecpay_callback_datetime', sql.DateTime, TradeDate);
+        const result = await request.query(`
+      INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, ecpay_callback_datetime)
+      VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @ecpay_callback_datetime )
+      `);
+      await pool.close();    
+      res.redirect('/order/order_success');
+    } else {
       res.redirect(307, '/order/order_fail');
     }
-   
-  } catch (err) {
-    res.status(500).send({ error: 'failed to fetch data' })
+  } else {
+    res.status(404).end();
   }
+
 }
 
 
-// export default async function ecpaycallback(req, res) {
-
-//   if (req.method === 'POST') {
-//     // console.log(req.body)
-//     const data = req.body;
-//     const { RtnCode, RtnMsg, MerchantTradeNo, TradeDate, CheckMacValue} = req.body
-//     const getCheckMacValue = computeCheckMacValue(data);
-
-//     if (CheckMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
-//       await pool.connect();
-//         const request = new sql.Request(pool);
-//         request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
-//         request.input('RtnCode', sql.VarChar, RtnCode);
-//         request.input('RtnMsg', sql.VarChar, RtnMsg);
-//         request.input('ecpay_callback_datetime', sql.DateTime, TradeDate);
-//         const result = await request.query(`
-//       INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, ecpay_callback_datetime)
-//       VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @ecpay_callback_datetime )
-//       `);
-//       await pool.close();    
-//       res.redirect('/order/order_success');
-//     } else {
-//       res.redirect(307, '/order/order_fail');
-//     }
-//   } else {
-//     res.status(404).end();
-//   }
-
-// }
-
-// [Object: null prototype] {
-//   CustomField1: '',
-//   CustomField2: '',
-//   CustomField3: '',
-//   CustomField4: '',
-//   MerchantID: '2000132',
-//   MerchantTradeNo: 'aacp168394433458368',
-//   PaymentDate: '2023/05/13 10:20:37',
-//   PaymentType: 'Credit_CreditCard',
-//   PaymentTypeChargeFee: '60',
-//   RtnCode: '1',
-//   RtnMsg: 'Succeeded',
-//   SimulatePaid: '0',
-//   StoreID: '',
-//   TradeAmt: '3000',
-//   TradeDate: '2023/05/13 10:19:58',
-//   TradeNo: '2305131019589927',
-//   CheckMacValue: 'F8C57828A5E5DFB301402E2922336E8DE080C5A4F76E4F77DAB58674C674022F'
-// }
 
 
 // // 計算 CheckMacValue

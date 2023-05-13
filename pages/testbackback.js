@@ -13,9 +13,9 @@ export default function Payment() {
   const handlePayment = async () => {
     setIsSubmitting(true)
     console
-    await fetch('/api/ecpay-orderresultback', {
+    await fetch('/api/ecpay-callback', {
       method: 'POST',
-      body: JSON.stringify({ 'RtnCode': '1', 'RtnMsg': 'Succeeded' }),
+      body: JSON.stringify({ 'MerchantTradeNo': 'aacp168394433458368', 'RtnCode': '1', 'TradeAmt':'3000','RtnMsg': 'Succeeded' ,'TradeNo': '2305131019589927', 'PaymentDate': '2023/05/13 10:20:37'}),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -38,7 +38,7 @@ export default function Payment() {
           </div>
           <div>
             <div className={utilStyles.flexcc}>
-              <button className={formStyles.button} onClick={handlePayment}>前往付款</button>
+              <button className={formStyles.button} onClick={handlePayment}>test returnURL</button>
               {isSubmitting ? '付款轉跳中...' : ''}
             </div>
           </div>
