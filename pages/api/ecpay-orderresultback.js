@@ -3,25 +3,26 @@ const MERCHANT_ID = process.env.MERCHANT_ID;
 const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
 
-
 export default async function ecpaycallback(req, res) {
 
-  const data = req.body
-  const getCheckMacValue = computeCheckMacValue(data);
-  const RtnCode = data.RtnCode
-  const RtnMsg = data.RtnMsg
-  const checkMacValue = data.CheckMacValue
+  if (req.method === 'POST') {
+    const data = req.body
+    // const getCheckMacValue = computeCheckMacValue(data);
+    const RtnCode = data.RtnCode
+    const RtnMsg = data.RtnMsg
+    // const checkMacValue = data.CheckMacValue
+    const MerchantTradeNo = data.MerchantTradeNo
+    // if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
 
-  console.log('Payment data:', data)
-
-  const MerchantTradeNo = data.MerchantTradeNo
-  if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
-    console.log('Payment succeeded:', MerchantTradeNo)
-    res.redirect('/order_success');
+    if (RtnCode == '1' ) {
+      res.redirect(307, '/order_success');
+    } else {
+      res.redirect(307, '/order_fail');
+    }
   } else {
-    console.log('Invalid callback:', MerchantTradeNo)
-    res.redirect('/order_fail');
+    res.status(404).end();
   }
+
 }
 
 

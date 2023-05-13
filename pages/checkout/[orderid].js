@@ -102,7 +102,7 @@ export default function Payment() {
 
               <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>付款金額(訂金)：</p></div>
-                <div className={utilStyles.five} ><p>{booking.amount*0.2}</p></div>
+                <div className={utilStyles.five} ><p>NTD {booking.amount*0.2}</p></div>
               </div>
               <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>付款金額(剩餘款項)：</p></div>
@@ -110,7 +110,7 @@ export default function Payment() {
               </div>
               <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>使用者名稱:</p></div>
-                <div className={utilStyles.five} ><p>NTD {booking.username}</p></div>
+                <div className={utilStyles.five} ><p>{booking.username}</p></div>
               </div>
               <div className={utilStyles.flexcc}>
                 <div className={utilStyles.three}><p>連絡電話:</p></div>
