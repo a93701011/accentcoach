@@ -15,11 +15,11 @@ export default async function ecpaycallback(req, res) {
     // const checkMacValue = data.CheckMacValue
     // const MerchantTradeNo = data.MerchantTradeNo
     // if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
-    // if (RtnCode == '1' ) {
-    //   res.redirect(307, '/order_success');
-    // } else {
-    //   res.redirect(307, '/order_fail');
-    // }
+    if (RtnCode == '1' ) {
+      res.redirect(307, '/order_success');
+    } else {
+      res.redirect(307, '/order_fail');
+    }
   } else {
     res.status(404).end();
   }
