@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import Layout, { siteTitle } from '../components/layout'
+import Layout, { siteTitle } from '../../components/layout'
 import Head from 'next/head';
-import utilStyles from '../styles/utils.module.css'
-import formStyles from '../styles/form.module.css'
+import utilStyles from '../../styles/utils.module.css'
+import formStyles from '../../styles/form.module.css'
 
 export default function paymentsucess() {
 
