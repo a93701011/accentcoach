@@ -13,9 +13,9 @@ export default async function ecpaycallback(req, res) {
 
     const data = req.body
     const getCheckMacValue = computeCheckMacValue(data);
-    const checkMacValue = data.CheckMacValue
+    const CheckMacValue = data.CheckMacValue
     console.log(data)
-    if (checkMacValue == getCheckMacValue) {
+    if (CheckMacValue == getCheckMacValue) {
         
       res.status(200).send('1|OK')
     } else {

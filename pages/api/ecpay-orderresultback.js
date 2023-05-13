@@ -20,7 +20,7 @@ export default async function ecpaycallback(req, res) {
     // const RtnMsg = data.RtnMsg
     // const checkMacValue = data.CheckMacValue
     // const MerchantTradeNo = data.MerchantTradeNo
-    if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
+    if (CheckMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
       await pool.connect();
         const request = new sql.Request(pool);
         request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
