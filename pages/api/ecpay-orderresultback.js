@@ -2,23 +2,35 @@
 const MERCHANT_ID = process.env.MERCHANT_ID;
 const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
+import config from '../../config/config';
+const pool = new sql.ConnectionPool(config);
 
 export default async function ecpaycallback(req, res) {
 
   if (req.method === 'POST') {
     console.log(req.body)
-    const { RtnCode, RtnMsg, MerchantTradeNo} = req.body
-    // const getCheckMacValue = computeCheckMacValue(data);
+    const { RtnCode, RtnMsg, MerchantTradeNo, TradeDate, CheckMacValue} = req.body
+    const getCheckMacValue = computeCheckMacValue(data);
 
     // const RtnCode = data.RtnCode
     // const RtnMsg = data.RtnMsg
     // const checkMacValue = data.CheckMacValue
     // const MerchantTradeNo = data.MerchantTradeNo
-    // if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
-    if (RtnCode == '1' ) {
-      res.redirect(307, '/order/order_success');
+    if (checkMacValue == getCheckMacValue && RtnMsg == 'Succeeded' && RtnCode == '1') {
+      await pool.connect();
+        const request = new sql.Request(pool);
+        request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
+        request.input('RtnCode', sql.VarChar, RtnCode);
+        request.input('RtnMsg', sql.VarChar, RtnMsg);
+        request.input('ecpay_callback_datetime', sql.DateTime, TradeDate);
+        const result = await request.query(`
+      INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, ecpay_callback_datetime)
+      VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @ecpay_callback_datetime )
+      `);
+      await pool.close();    
+      res.redirect('/order/order_success');
     } else {
-      res.redirect(307, '/order/order_fail');
+      res.redirect('/order/order_fail');
     }
   } else {
     res.status(404).end();
