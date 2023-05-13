@@ -10,27 +10,32 @@ const HASH_IV = process.env.HASH_IV;
 
 export default async function ecpaycallback(req, res) {
   // if (req.method === 'POST') {
-  const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt,  } = req.body
+  const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt, } = req.body
   // const data = req.body
   // const getCheckMacValue = computeCheckMacValue(data);
 
   // console.log(data)
-
-  await pool.connect();
-  const request = new sql.Request(pool);
-  request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
-  request.input('RtnCode', sql.VarChar, RtnCode);
-  request.input('RtnMsg', sql.VarChar, RtnMsg);
-  request.input('PaymentDate', sql.DateTime, PaymentDate);
-  request.input('TradeNo', sql.VarChar, TradeNo);
-  request.input('TradeAmt', sql.Int, TradeAmt);
-  const result = await request.query(`
-      INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, PaymentDate, TradeNo,TradeAmt )
-      VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @PaymentDate, @TradeNo, @TradeAmt)
+  try {
+    await pool.connect();
+    const request = new sql.Request(pool);
+    request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
+    request.input('RtnCode', sql.VarChar, RtnCode);
+    request.input('RtnMsg', sql.VarChar, RtnMsg);
+    request.input('PaymentDate', sql.DateTime, PaymentDate);
+    request.input('TradeNo', sql.VarChar, TradeNo);
+    const result = await request.query(`
+      INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, PaymentDate, TradeNo )
+      VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @PaymentDate, @TradeNo)
       `);
-  await pool.close();
 
-  res.status(200).send('1|OK')
+    res.status(200).send('1|OK')
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error epcay callback' });
+  } finally {
+    await pool.close();
+  }
+
 
   // res.status(400).send('0|FAIL')
 

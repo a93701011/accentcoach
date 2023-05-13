@@ -12,9 +12,7 @@ export default async function handler(req, res) {
       await pool.connect();
 
        const orderid = `aacp${(new Date()).getTime()}`;
-      
       const {  username, phone, email, itemname, amount, bookingdate } = req.body;
-      console.log(req.body)
       const request = new sql.Request(pool);
       request.input('username', sql.NVarChar, username);
       request.input('phone', sql.VarChar, phone);
