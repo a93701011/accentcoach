@@ -1,5 +1,6 @@
 
 const sql = require('mssql');
+const crypto = require('crypto');
 import config from '../../config/config';
 const pool = new sql.ConnectionPool(config);
 
@@ -8,7 +9,7 @@ const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
 
 export default async function ecpaycallback(req, res) {
-  if (req.method === 'POST') {
+  // if (req.method === 'POST') {
 
     const data = req.body
     const getCheckMacValue = computeCheckMacValue(data);
@@ -20,9 +21,9 @@ export default async function ecpaycallback(req, res) {
     } else {
       res.status(400).send('0|FAIL')
     }
-  } else {
-    res.status(404).end();
-  }
+  // } else {
+  //   res.status(404).end();
+  // }
 }
 
 
