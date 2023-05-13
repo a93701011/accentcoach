@@ -23,8 +23,8 @@ export default async function ecpayinfo(req, res) {
       TradeDesc: `${itemname}-${bookingdate}-${email}`, // 交易描述
       ItemName: itemname, // 商品名稱
       ReturnURL: 'https://accentcoach.co/api/ecpay-callback', // 付款完成後返回的網址
-      ClientBackURL: 'https://accentcoach.co/', // 付款取消後返回的網址,
-      // OrderResultURL: 'https://accentcoach.co/api/ecpay-orderresultback',
+      // ClientBackURL: 'https://accentcoach.co/', // 付款取消後返回的網址,
+      OrderResultURL: 'https://accentcoach.co/api/ecpay-orderresultback',
       ChoosePayment: 'ALL',
       EncryptType: 1, // 交易資料加密類型，固定為 1
 
