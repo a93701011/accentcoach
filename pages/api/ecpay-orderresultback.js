@@ -1,4 +1,5 @@
 const sql = require('mssql');
+const crypto = require('crypto');
 import config from '../../config/config';
 const pool = new sql.ConnectionPool(config);
 
