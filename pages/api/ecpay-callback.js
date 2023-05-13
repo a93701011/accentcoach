@@ -18,8 +18,6 @@ export default async function ecpaycallback(req, res) {
 
 
     if (checkMacValue == getCheckMacValue) {
-      console.log('Payment succeeded:', MerchantTradeNo)
-      try {
         await pool.connect();
         const request = new sql.Request(pool);
         request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
@@ -30,25 +28,14 @@ export default async function ecpaycallback(req, res) {
       INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, ecpay_callback_datetime)
       VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @ecpay_callback_datetime )
       `);
-
-        res.status(200).json({ orderid });
-      } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Error insert ecpay callback' });
-      } finally {
-        await pool.close();
-      }
-
+      await pool.close();    
       res.status(200).send('1|OK')
     } else {
-      console.log('Invalid callback:', MerchantTradeNo)
       res.status(400).send('0|FAIL')
     }
   } else {
     res.status(404).end();
   }
-
-
 }
 
 
