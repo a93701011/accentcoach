@@ -13,7 +13,7 @@ export default async function ecpaycallback(req, res) {
   //   return res.status(405).end(); // Method Not Allowed
   // }
 
-    res.redirect('https://accentcoach.vercel.app/order/order_success/');
+    res.redirect(302,'https://accentcoach.vercel.app/order/order_success/');
   // const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt } = req.body
   // const data = req.body
   // const getCheckMacValue = computeCheckMacValue(data);
