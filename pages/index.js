@@ -277,6 +277,7 @@ export default function Home() {
           className={utilStyles.imagesmall}
         />
       </section>
+ 
     </Layout >
   )
 }

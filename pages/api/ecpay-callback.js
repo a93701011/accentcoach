@@ -9,20 +9,22 @@ const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
 
 export default async function ecpaycallback(req, res) {
-  // if (req.method === 'POST') {
-  const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt } = req.body
+  if (req.method === 'POST') {
+    res.status(200).send('1|OK')
+  // const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt } = req.body
   // const data = req.body
   // const getCheckMacValue = computeCheckMacValue(data);
   // console.log(data)
-  if (RtnCode == 1) {
-    await handleResult(RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt)
-    res.status(200).send('1|OK')
-  } else {
-    res.status(400).send('0|FAIL')
-  }
+  // if (RtnCode == 1) {
+  //   await handleResult(RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt)
+  //   res.status(200).send('1|OK')
+  // } else {
+  //   res.status(400).send('0|FAIL')
+  // }
+}
 
 }
-async function handleResult(RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt) {
+async function handleResult(RtnCode, RtnMsg, MerchantTradeNo=0, PaymentDate, TradeNo=0, TradeAmt=0) {
   try {
     await pool.connect();
     const request = new sql.Request(pool);

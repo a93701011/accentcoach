@@ -40,27 +40,27 @@ export default function Footer() {
         <div className={footerStyles.bgcontainer}>
             <div className={footerStyles.container}>
                 <div className={footerStyles.format}>
-                    <div className={footerStyles.three}>
-       
-                        <p className={utilStyles.pbold}>Accent Private Coach</p>
-                        <p>關於我們</p>
-                        <p><Link href="/privacy">隱私權政策</Link></p>
-                        <p><Link href="/terms">使用條款</Link></p>
-                        <p><Link href="/refund">退款政策</Link></p>
-                   
-                    </div>
-                    <div className={footerStyles.three}>
-                        <p className={utilStyles.pbold}>聯絡我們</p>
-                        <p>服務時間 : 周一至周五 10:00-18:00</p>
-                        <p>Email : accentprivatecoach@gmail.com</p>
-
-                    </div>
-                    <div className={footerStyles.three}>
+                <div className={footerStyles.menu}>
                         <p className={utilStyles.pbold}>網站地圖</p>
                         <p><Link href="/">首頁</Link></p>
                         <p><Link href="/booking">預約私人教練</Link></p>
                         <p><Link href="/querybooking">查詢預約</Link></p>
                     </div>
+                    <div className={footerStyles.menu}>
+       
+                        <p className={utilStyles.pbold}>Policy</p>
+                        <p><Link href="/privacy">隱私權政策</Link></p>
+                        <p><Link href="/terms">使用條款</Link></p>
+                        <p><Link href="/refund">退款政策</Link></p>
+                   
+                    </div>
+                    <div className={footerStyles.menu}>
+                        <p className={utilStyles.pbold}>聯絡我們</p>
+                        <p>服務時間 : 周一至周五 10:00-18:00</p>
+                        <p>Email : accentprivatecoach@gmail.com</p>
+
+                    </div>
+       
                 </div>
 
                 <div>
@@ -74,9 +74,9 @@ export default function Footer() {
                 </div>
                 {/* <div className={utilStyles.space}></div> */}
                 <div className={footerStyles.undertext}>
-                    <p>Copyright © 2023</p>
-                    <br />
-                    <p>網站設計委託在家料.com以及金流服務整合綠界支付</p>
+                    <p>© 2023 Copyright </p>
+                    
+                    <p>網站create by KUCH 整合綠界支付金流服務</p>
                 </div>
             </div>
             <div className={utilStyles.space}></div>

@@ -4,7 +4,7 @@ html,
 body {
   padding: 0;
   margin: 0;
- 
+  font-size: 1.2rem;
   font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -20,7 +20,7 @@ a:hover {
 
 * {
   box-sizing: border-box;
-  border:  1px soslid green;
+  /* border: 1px solid forestgreen; */
 }
 
 img {
@@ -57,4 +57,7 @@ th {
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+section{
+  margin: 0;
 }

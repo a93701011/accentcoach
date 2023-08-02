@@ -1,22 +1,17 @@
 .bgcontainer {
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(230, 222, 222);
   font-size: 1rem;
-  line-height: 1.5;
-  text-align: left;
-  padding: 0.5rem 3rem;
+  line-height: 1.8;
 }
 
 .container {
   max-width: 75rem;
   padding: 1.5rem 2rem;
   margin: 0 auto;
+
 }
 
-.three {
-  /* display: flex; */
-  width: 33%;  
-  /* padding-left: 3%; */
-  /* margin: 0 3rem; */
+.menu {
   padding: 0 3rem;;
   
 }
@@ -24,7 +19,6 @@
 .format{
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   margin-bottom: 4rem;
  
 }
@@ -34,21 +28,48 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 4rem;
-
-  
 }
 
 .undertext{
   text-align: center;
-
+  font-size: 0.8rem;
 }
-@media (max-width: 900px) {
+
+.menu a {
+  padding-bottom: 5px;
+
+  background-image: linear-gradient(transparent 0%,
+          transparent 90%,
+          #DBADB0 80%,
+          #DBADB0 90%);
+
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position-x: right;
+
+  text-decoration: none;
+
+  transition: background-size 300ms;
+}
+
+.menu a:link,
+.menu a:visited {
+  color: #000000;
+}
+
+.menu a:hover,
+.menu a:active {
+  background-size: 100% 100%;
+  background-position-x: left;
+}
+
+@media (max-width: 1000px) {
   .format{
     display: block;
   
   }
-  .three {
-    width: 100%;
+  .menu {
+    width: 50%;
     margin-bottom: 2rem;
     padding: 0;
   }

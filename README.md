@@ -1,1 +1,1 @@
-to be updated
+This is a CHIA-HUA KU Personal Website

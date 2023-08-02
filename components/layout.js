@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Script from 'next/script'
-import Navbar from './navbar';
+import Hamburger from './hamburger';
 import Footer from './footer';
 import styles from './layout.module.css'
 import utilStyles from '../styles/utils.module.css'
@@ -35,9 +35,9 @@ export default function Layout({ children, home }) {
         }
       />
 
-      <Navbar />
+      <Hamburger />
       <h1 className={utilStyles.heading2Xl}>[!!!測試中TEST!!!不要預約不要付款]</h1>
-      <div className={styles.main}>{children}</div>
+      <div className={styles.children}>{children}</div>
       <Footer />
     </div>
   )

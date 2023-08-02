@@ -1,16 +1,6 @@
 const sql = require('mssql');
 import config from '../../config/config';
 
-// const config = {
-//   "user": process.env.sqluser,
-//   "password": process.env.sqlpassword,
-//   "server": process.env.sqlserver,
-//   "database": process.env.sqldatabase,
-//   options: {
-//     encrypt: true // enable SSL encryption
-//   }
-// };
-
 const pool = new sql.ConnectionPool(config);
 
 export default async function handler(req, res) {
@@ -29,7 +19,6 @@ export default async function handler(req, res) {
         INSERT INTO accentcoach_newsletter (email)
         VALUES ( @email)
       `);
-      // res.status(200).json({ message: 'Booking created successfully' });
       res.status(200).json({email});
     } catch (err) {
       console.error(err);
@@ -40,6 +29,5 @@ export default async function handler(req, res) {
   } else {
     res.status(404).end();
   }
-
 
 }
