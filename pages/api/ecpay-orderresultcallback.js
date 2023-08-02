@@ -12,9 +12,8 @@ export default async function ecpaycallback(req, res) {
   // if (req.method !== 'POST') {
   //   return res.status(405).end(); // Method Not Allowed
   // }
-  // const msg = {data :　'1|OK'}
-    // res.status(200).send(msg)
-    res.redirect('https://accentcoach.co/orders/order_success/');
+
+    res.redirect('https://www.accentcoach.co/order/order_success/');
   // const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt } = req.body
   // const data = req.body
   // const getCheckMacValue = computeCheckMacValue(data);
