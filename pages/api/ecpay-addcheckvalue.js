@@ -24,7 +24,7 @@ export default async function ecpayinfo(req, res) {
       ItemName: itemname, // 商品名稱
       ReturnURL: 'https://www.accentcoach.co/api/ecpay-returnback',  // ReturnURL為付款結果通知回傳網址，為特店server或主機的URL，用來接收綠界後端回傳的付款結果通知。
       ClientBackURL: 'https://www.accentcoach.co/', // 消費者點選此按鈕後，會將頁面導回到此設定的網址(返回商店按鈕)
-      OrderResultURL: 'https:/www.accentcoach.co/api/ecpay-orderresultcallback', // 消費者付款完成後，綠界會將付款結果參數以POST方式回傳到到該網址
+      OrderResultURL: 'https://accentcoach.vercel.app/api/ecpay-orderresultcallback', // 消費者付款完成後，綠界會將付款結果參數以POST方式回傳到到該網址
       ChoosePayment: 'ALL',
       EncryptType: 1, // 交易資料加密類型，固定為 1
 

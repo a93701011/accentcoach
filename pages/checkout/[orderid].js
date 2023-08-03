@@ -54,7 +54,7 @@ export default function Payment() {
     })
       .then(res => res.json())
       .then(data => {
-        // console.log(data)
+        console.log(data)
         let form = document.createElement('form');
         form.setAttribute('method', 'post');
         form.setAttribute('action', 'https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5');
