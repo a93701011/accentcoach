@@ -25,7 +25,7 @@ export default function paymentsucess() {
                         <h1>付款結果</h1>
                     </div>
                     <div>
-                        <div className={utilStyles.headingMd}><p>付款失敗</p></div>
+                        <div className={utilStyles.headingMd}><p>付款失敗, 請重預約時間</p></div>
                         <div className={utilStyles.flexcc}>
                             <button className={formStyles.button} onClick={handleClick}>返回主頁</button>
 

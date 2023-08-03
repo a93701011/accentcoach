@@ -1,6 +1,6 @@
 
 const sql = require('mssql');
-// const crypto = require('crypto');
+const crypto = require('crypto');
 import config from '../../config/config';
 const pool = new sql.ConnectionPool(config);
 
@@ -8,17 +8,22 @@ const MERCHANT_ID = process.env.MERCHANT_ID;
 const HASH_KEY = process.env.HASH_KEY;
 const HASH_IV = process.env.HASH_IV;
 
+// const MERCHANT_ID = '2000132'
+// const HASH_KEY = '5294y06JbISpM5x9';
+// const HASH_IV = 'v77hoKGq4kWxNNIS';
+
+
 export default async function ecpaycallback(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).end(); // Method Not Allowed
-  }
- 
-  const { RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt } = req.body
-  // const data = req.body
-  // const getCheckMacValue = computeCheckMacValue(data);
+  // if (req.method !== 'POST') {
+  //   return res.status(405).end(); // Method Not Allowed
+  // }
+
+  const { RtnCode, RtnMsg, MerchantID, MerchantTradeNo, PaymentDate, PaymentType, PaymentTypeChargeFee, TradeNo, TradeDate, TradeAmt, CheckMacValue } = req.body
+  const data = req.body
+  const calculateCheckMacValue = computeCheckMacValue(data);
   // console.log(data)
-  if (RtnCode == 1) {
-    await handleResult(RtnCode, RtnMsg, MerchantTradeNo, PaymentDate, TradeNo, TradeAmt)
+  if (1 == 1) {  // chage to chcekmacvalue
+    await handleResult(RtnCode, RtnMsg, MerchantID, MerchantTradeNo, PaymentDate, PaymentType, PaymentTypeChargeFee, TradeNo, TradeDate, TradeAmt, CheckMacValue, calculateCheckMacValue)
     res.status(200).send('1|OK')
   } else {
     res.status(400).send('0|FAIL')
@@ -26,19 +31,25 @@ export default async function ecpaycallback(req, res) {
 
 
 }
-async function handleResult(RtnCode, RtnMsg, MerchantTradeNo=0, PaymentDate, TradeNo=0, TradeAmt=0) {
+async function handleResult(RtnCode, RtnMsg, MerchantID, MerchantTradeNo, PaymentDate, PaymentType, PaymentTypeChargeFee, TradeNo, TradeDate, TradeAmt, CheckMacValue, calculateCheckMacValue) {
   try {
     await pool.connect();
     const request = new sql.Request(pool);
+    request.input('MerchantID', sql.VarChar, MerchantID);
     request.input('MerchantTradeNo', sql.VarChar, MerchantTradeNo);
     request.input('RtnCode', sql.VarChar, RtnCode);
-    request.input('RtnMsg', sql.VarChar, RtnMsg);
+    request.input('RtnMsg', sql.NVarChar, RtnMsg);
     request.input('PaymentDate', sql.DateTime, PaymentDate);
+    request.input('PaymentType', sql.VarChar, PaymentType);
+    request.input('PaymentTypeChargeFee', sql.VarChar, PaymentTypeChargeFee);
     request.input('TradeNo', sql.VarChar, TradeNo);
+    request.input('TradeDate', sql.DateTime, TradeDate);
     request.input('TradeAmt', sql.Int, TradeAmt);
+    request.input('CheckMacValue', sql.VarChar, CheckMacValue);
+    request.input('CalculateCheckMacValue', sql.VarChar, calculateCheckMacValue);
     const result = await request.query(`
-        INSERT INTO [accentcoach_epaycallback] (MerchantTradeNo, RtnCode, RtnMsg, PaymentDate, TradeNo, TradeAmt )
-        VALUES ( @MerchantTradeNo, @RtnCode, @RtnMsg, @PaymentDate, @TradeNo, @TradeAmt)
+        INSERT INTO [accentcoach_epaycallback] (MerchantID, MerchantTradeNo, RtnCode, RtnMsg, PaymentDate, PaymentType, PaymentTypeChargeFee, TradeNo, TradeDate, TradeAmt , CheckMacValue,CalculateCheckMacValue)
+        VALUES (@MerchantID, @MerchantTradeNo, @RtnCode, @RtnMsg, @PaymentDate, @PaymentType,@PaymentTypeChargeFee, @TradeNo, @TradeDate, @TradeAmt, @CheckMacValue, @CalculateCheckMacValue)
         `);
   } catch (err) {
     console.error(err);
@@ -47,11 +58,6 @@ async function handleResult(RtnCode, RtnMsg, MerchantTradeNo=0, PaymentDate, Tra
   }
 }
 
-// res.status(400).send('0|FAIL')
-
-// } else {
-//   res.status(404).end();
-// }
 
 // [Object: null prototype] {
 //   CustomField1: '',
@@ -81,6 +87,10 @@ const computeCheckMacValue = (data) => {
     acc[key] = data[key];
     return acc;
   }, {});
+
+  if (sortedData.CheckMacValue) {
+    delete sortedData.CheckMacValue
+  }
 
   // 將參數轉換成 URL 字串
   // const urlEncodedData = querystring.stringify(sortedData);
